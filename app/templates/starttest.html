@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block concent %}
+<script type="text/javascript">
+    var inter;
+    var mycanvas;
+    var context;
+    var ctx;
+    var lines = 1000;
+    var numbers = new Array(10);
+    var counter = 0;
+    var step    = 400;
+    $(document).ready(function(){
+            inter = setInterval("start_update()",1000);
+            $(".daohang").removeClass("active");
+            $(".daohang").eq(1).addClass("active");
+            draw_graph();
+        })
+
+    $(document).ready(function(){
+            $("#stop_test").click(
+                function(event){
+                    clearInterval(inter);
+                })
+            })
+    $(document).ready(function(){
+        $(".daohang").click(
+           function(){
+                $(".daohang").removeClass("active");
+                $(this).addClass("active");
+           })
+    })
+    function start_update()
+    {
+        $("#ajax_div").load("{{url_for('update_result')}}"); 
+        if($(".stops").length)
+        {
+            clearInterval(inter);
+        }
+        else
+        {
+            str = $(".btn-primary").last().html();
+            numbers[counter] = parseInt(str.split(':')[1]);
+            if(counter == 0)
+            {
+                ctx.printPoint(lines, numbers[counter], 2, 2);
+            }
+            else
+            {
+                ctx.printLine(lines - step,numbers[counter-1],lines,numbers[counter]);
+            }
+            counter++;
+            lines += step;
+        }
+    }
+    function draw_graph()
+    {
+        mycanvas = document.getElementById("result_graph"); 
+        if(mycanvas == null)
+            return false;
+        context  = mycanvas.getContext("2d");
+        ctx = new FlatSystem(context,550,550);
+        ctx.setProportion(25);
+        ctx.setCalibration(50);
+        ctx.onlyQuadrant(1);
+        ctx.init();
+        ctx.build();
+    }
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5" id="ajax_div" style="clear;both">
+            {% include 'update_result.html' %}
+        </div>
+        <div class="col-md-5 ">
+             <canvas id="result_graph" width="570" height="570" style="background-color:white;">
+                你的浏览器不支持 Canvas 标签
+             </canvas>
+             <hr>
+             <button id="stop_test" class="btn btn-danger"> Stop </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

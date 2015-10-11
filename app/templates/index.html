@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block concent %}
+<script type="text/javascript">
+$(document).ready(function(){
+});
+</script>
+<style type="text/css">
+    input{
+        width:200px;
+    }
+</style>
+    <form action="" method="post" name="index">
+        {{form.hidden_tag()}}   
+        <div class="container">
+
+            {% for item in form %}
+            {% if item.name != "csrf_token"%}
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <input type="button" class="btn btn-default" style="width:200px;" value="{{item.name}}" >
+                </span>
+                {{item(class="form-control",style="width:200px")}}
+                {% for error in item.errors %}
+                <button type="button" class="btn btn-danger" > {{error}} </button>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            <hr>
+            <input type="submit" class = "btn btn-success" value="开始测试">
+        </div>
+            
+    </form>
+
+
+{% endblock %}

@@ -1,0 +1,43 @@
+<html>
+    <head>
+        {% if title %}
+            <title> {{title}} - 指定流量处理系统仿真平台 </title>
+        {% else %}
+            <title> 欢迎来到指定流量处理系统仿真平台 </title>
+        {% endif %}
+        <!-- 新 Bootstrap 核心 CSS 文件 -->
+        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+        <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+        <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+        <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        
+        <script src="{{url_for('static',filename='flatsystem.js')}}"></script>
+
+    </head>
+    <body>
+        <h1 style="text-align:center"><font face="微软雅黑"> 众核平台指定流量处理系统负载仿真器子系统</font></h1>
+        <div class="container">
+        <ul class="nav nav-pills nav-justified" role="tablist">
+             <li id="daohang" role="presentation" class="daohang active"><a href="{{url_for('index')}}">主页</a></li>
+             <li id="daohang" role="presentation" class="daohang" ><a href="{{url_for('starttest')}}">测试界面</a></li>
+             <li id="daohang" role="presentation" class="daohang" ><a href="#">测试结果</a></li>
+             <li id="daohang" role="presentation" class="daohang" ><a href="#">其他信息</a></li>
+        </ul>
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+             {% if messages %}
+                  {% for message in messages %}
+                  <li> {{message}} </li>
+                  {% endfor %}
+             {% endif %}
+        
+        {% endwith%}
+
+    </body>
+    {% block concent %}
+    {% endblock %}
+</html>
